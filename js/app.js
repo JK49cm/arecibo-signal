@@ -14,6 +14,9 @@ const DEFAULT_MSG = 'WE ARE HERE // 1679';
 const MAX_CHARS = 120;
 const MODES = ['grid', 'ring', 'arecibo'];
 const BLOCK_MSG = '請放一句話，不放連結或地址 · Please use a sentence — no links or addresses.';
+const PROMO_MSG = '請放一句話，不放推銷用語 · Please use a sentence — no promotional wording.';
+const LONG_MSG = '太長了：中文約 85 字以內 · Too long for the grid (max 255 bytes; about 85 CJK characters).';
+const guardMsg = s => isBlocked(s) === 'promo' ? PROMO_MSG : BLOCK_MSG;
 
 const $ = s => document.querySelector(s);
 const canvas = $('#cc');           // preview = exactly the 1200x1200 download
@@ -32,9 +35,27 @@ function despacedAddress(s) {
   const m = t.match(/[1-9A-HJ-NP-Za-km-z]{32,}/g) || [];
   return m.some(x => /\d.*\d.*\d/.test(x) && /[A-Z]/.test(x) && /[a-z]/.test(x));
 }
+// ---------- scam / promo wording (audit #gen1 section 25) ----------
+// Case-insensitive; full-width folded by NFKC; zero-width chars removed; letters may be split by spaces or symbols.
+const SEP = '[^\\p{L}\\p{N}]{0,3}';
+const spaced = w => [...w].map(c => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join(SEP);
+const PROMO_RES = [
+  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('presale')}`, 'iu'),
+  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('airdrop')}`, 'iu'),
+  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('dmme')}(?![\\p{L}])`, 'iu'),
+  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('ca')}\\s*:`, 'iu'),
+  new RegExp(`(${spaced('預售')}|${spaced('预售')}|${spaced('空投')})`, 'u'),
+  new RegExp(`${spaced('arecibo')}${SEP}(${spaced('token')}|${spaced('coin')}|${spaced('代幣')}|${spaced('代币')}|幣|币)`, 'iu'),
+  /\$\s*[A-Za-z][A-Za-z0-9]{0,9}(?![A-Za-z0-9])/,      // $ABC, $ abc
+  /\$\s*[A-Z](?:\s+[A-Z0-9]){1,9}(?![A-Za-z0-9])/,     // $ A B C
+];
+function isPromo(s) { return PROMO_RES.some(r => r.test(s)); }
+
+// returns '' (ok), 'link' or 'promo'
 export function isBlocked(s) {
-  s = s.normalize('NFKC');
-  return URL_RE.test(s) || DOMAIN_RE.test(s) || HOSTLIKE_RE.test(s) || (s.match(SOL_RE) || []).some(looksLikeAddr) || EVM_RE.test(s) || despacedAddress(s);
+  s = s.normalize('NFKC').replace(/[\p{Cf}]/gu, '');
+  if (URL_RE.test(s) || DOMAIN_RE.test(s) || HOSTLIKE_RE.test(s) || (s.match(SOL_RE) || []).some(looksLikeAddr) || EVM_RE.test(s) || despacedAddress(s)) return 'link';
+  return isPromo(s) ? 'promo' : '';
 }
 
 // ---------- base64url ----------
@@ -114,10 +135,10 @@ function draw() {
   const text = raw || DEFAULT_MSG;
   $('#bits').value = '';
   if (mode !== 'arecibo' && (isBlocked(text) || text.length > MAX_CHARS)) {
-    state = null; setButtons(false); $('#sharelink').value = ''; $('#err').textContent = BLOCK_MSG; return;
+    state = null; setButtons(false); $('#sharelink').value = ''; $('#err').textContent = text.length > MAX_CHARS ? LONG_MSG : guardMsg(text); return;
   }
   try { render(mode, night, text, false); }
-  catch (e) { state = null; setButtons(false); $('#sharelink').value = ''; $('#err').textContent = e.message; }
+  catch (e) { state = null; setButtons(false); $('#sharelink').value = ''; $('#err').textContent = e.message === 'max 255 bytes' ? LONG_MSG : e.message; }
 }
 
 // ---------- share links (#...) ----------
@@ -216,7 +237,7 @@ function downloadVertical() {
 function shareX() {
   if (!state) return;
   let text = $('#sharetext').value.trim() || DEFAULT_SHARE_TEXT;
-  if (isBlocked(text)) { $('#err').textContent = BLOCK_MSG; return; }
+  if (isBlocked(text)) { $('#err').textContent = guardMsg(text); return; }
   const u = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareLink())}`;
   window.open(u, '_blank', 'noopener');
   ping('share');
