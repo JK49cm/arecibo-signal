@@ -35,21 +35,41 @@ function despacedAddress(s) {
   const m = t.match(/[1-9A-HJ-NP-Za-km-z]{32,}/g) || [];
   return m.some(x => /\d.*\d.*\d/.test(x) && /[A-Z]/.test(x) && /[a-z]/.test(x));
 }
-// ---------- scam / promo wording (audit #gen1 section 25) ----------
+// ---------- scam / promo wording (audit #gen1 section 25; v1.2 adds look-alike digits and more words) ----------
 // Case-insensitive; full-width folded by NFKC; zero-width chars removed; letters may be split by spaces or symbols.
+// v1.2: word rules are also tested on a copy with 0→o 1→i 3→e 4→a 5→s @→a (matching only; the user's text is never changed).
 const SEP = '[^\\p{L}\\p{N}]{0,3}';
 const spaced = w => [...w].map(c => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join(SEP);
-const PROMO_RES = [
-  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('presale')}`, 'iu'),
-  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('airdrop')}`, 'iu'),
-  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('dmme')}(?![\\p{L}])`, 'iu'),
-  new RegExp(`(?<![\\p{L}\\p{N}])${spaced('ca')}\\s*:`, 'iu'),
+const NB = '(?<![\\p{L}\\p{N}])';      // not preceded by a letter/digit
+const NA = '(?![\\p{L}\\p{N}])';       // not followed by a letter/digit
+const LEET = { 0: 'o', 1: 'i', 3: 'e', 4: 'a', 5: 's', '@': 'a' };
+const unleet = s => s.replace(/[01345@]/g, c => LEET[c]);
+const NAMES = `(${spaced('arecibo')}|${spaced('cropcode')})`;
+const KINDS = `(${spaced('token')}|${spaced('coin')}|${spaced('代幣')}|${spaced('代币')}|幣|币)`;
+// tested on the text as typed AND on the look-alike-folded copy
+const WORD_RES = [
+  new RegExp(`${NB}${spaced('presale')}`, 'iu'),
+  new RegExp(`${NB}${spaced('airdrop')}`, 'iu'),
+  new RegExp(`${NB}${spaced('dmme')}(?![\\p{L}])`, 'iu'),
+  new RegExp(`${NB}${spaced('ca')}\\s*:`, 'iu'),
   new RegExp(`(${spaced('預售')}|${spaced('预售')}|${spaced('空投')})`, 'u'),
-  new RegExp(`${spaced('arecibo')}${SEP}(${spaced('token')}|${spaced('coin')}|${spaced('代幣')}|${spaced('代币')}|幣|币)`, 'iu'),
-  /\$\s*[A-Za-z][A-Za-z0-9]{0,9}(?![A-Za-z0-9])/,      // $ABC, $ abc
-  /\$\s*[A-Z](?:\s+[A-Z0-9]){1,9}(?![A-Za-z0-9])/,     // $ A B C
+  new RegExp(`${NB}${spaced('prelaunch')}`, 'iu'),                          // pre-launch, prelaunch
+  new RegExp(`${NB}${spaced('whitelist')}`, 'iu'),                          // whitelist, white list
+  new RegExp(`${NB}w\\.?l\\.?${NA}`, 'iu'),                                 // WL, W.L. — standalone only (wlan is fine)
+  new RegExp(`(${spaced('合約地址')}|${spaced('合约地址')})`, 'u'),
+  new RegExp(`${NAMES}${SEP}(?:s${SEP})?${KINDS}`, 'iu'),                   // ARECIBO/CROPCODE ['s] token|coin|代幣|幣
 ];
-function isPromo(s) { return PROMO_RES.some(r => r.test(s)); }
+// tested on the text as typed only (folding digits here would block "$5" or "ca. 1974")
+const RAW_RES = [
+  /\$\s*[A-Za-z][A-Za-z0-9]{0,9}(?![A-Za-z0-9])/,      // $ABC, $ abc, $CROPCODE
+  /\$\s*[A-Z](?:\s+[A-Z0-9]){1,9}(?![A-Za-z0-9])/,     // $ A B C
+  new RegExp(`${NB}C[.\\s]?A\\.?${NA}`, 'u'),                              // standalone upper-case CA, C.A.
+  new RegExp(`${NB}ca\\s+(?=[1-9A-HJ-NP-Za-km-z]*\\d)(?=[1-9A-HJ-NP-Za-km-z]*[A-Za-z])[1-9A-HJ-NP-Za-km-z]{6,}`, 'iu'), // ca 7xKXtg2C (address-like)
+];
+function isPromo(s) {
+  const f = unleet(s);
+  return WORD_RES.some(r => r.test(s) || r.test(f)) || RAW_RES.some(r => r.test(s));
+}
 
 // returns '' (ok), 'link' or 'promo'
 export function isBlocked(s) {
