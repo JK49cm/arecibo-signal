@@ -1,0 +1,3 @@
+*.bak*
+counter-worker/
+DEPLOY_PLAN.md
