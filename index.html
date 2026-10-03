@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARECIBO — 每個麥田圈都是一段訊息 | Every crop circle is a message</title>
+<meta name="description" content="把一句話壓進麥田：可解碼的二進位麥田圈生成器，致敬 1974 年阿雷西博訊息。Press your words into a wheat field — a decodable binary crop-circle generator, a tribute to the 1974 Arecibo message.">
+<meta property="og:title" content="ARECIBO — Every crop circle is a message">
+<meta property="og:description" content="Decode it. Press your own. 1679 bits since 1974.">
+<meta property="og:image" content="https://arecibosignal.com/img/hero-arecibo1974.png">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--bg:#14110a;--fg:#efe6c8;--gold:#c9ad5b;--mut:#a89c78;--card:#1e1a10}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif}
+a{color:var(--gold)}header,section,footer{max-width:1040px;margin:0 auto;padding:28px 20px}
+h1{font-size:2.2rem;margin:.2em 0;color:var(--gold);letter-spacing:.04em}h2{color:var(--gold);border-bottom:1px solid #3a3220;padding-bottom:.3em}
+.en{color:var(--mut);font-size:.95em}.hero{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.hero img{width:100%;border-radius:12px;border:1px solid #3a3220}.card{background:var(--card);border:1px solid #3a3220;border-radius:12px;padding:18px}
+.gen{display:grid;grid-template-columns:320px 1fr;gap:20px}canvas{width:100%;height:auto;border-radius:10px;border:1px solid #3a3220;background:#000}
+label{display:block;margin:.6em 0 .2em;color:var(--mut)}input[type=text],select,textarea{width:100%;background:#0e0c07;color:var(--fg);border:1px solid #3a3220;border-radius:8px;padding:8px;font:inherit}
+textarea{font-family:ui-monospace,"DejaVu Sans Mono",monospace;font-size:12px;min-height:120px}
+button{background:var(--gold);color:#1a1508;border:0;border-radius:8px;padding:9px 14px;font-weight:700;cursor:pointer;margin:.6em .4em 0 0}
+button.sec{background:#3a3220;color:var(--fg)}.mono{font-family:ui-monospace,monospace}.err{color:#ff8a7a}
+.notice{border-left:4px solid var(--gold);padding:10px 14px;background:#1a160c}
+@media(max-width:760px){.hero,.gen{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div>
+    <h1>ARECIBO</h1>
+    <p><strong>每一個麥田圈，都是一段可以解開的訊息。</strong><br><span class="en">Every crop circle is a message you can decode.</span></p>
+    <p>1974 年 11 月 16 日，人類從阿雷西博電波望遠鏡向 M13 星團送出 1,679 個位元。我們把這些位元壓進麥田——也讓你把自己的一句話壓進去。</p>
+    <p class="en">On 16 November 1974, humanity beamed 1,679 bits from the Arecibo radio telescope toward the M13 cluster. We press those bits into a wheat field — and you can press your own words too.</p>
+    <p><a href="#generator"><button>做你自己的麥田圈 · Press your own</button></a><a href="#decode"><button class="sec">解碼 · Decode</button></a></p>
+  </div>
+  <img src="img/hero-arecibo1974.png" alt="1974 年阿雷西博訊息（73×23 位元）壓成的麥田圈 / The 1974 Arecibo message pressed into a wheat field">
+</header>
+
+<section id="story">
+  <h2>故事 · The story</h2>
+  <p>1,679 = 23 × 73，兩個質數相乘。把位元排成 73 列 × 23 欄，就會出現數字 1–10、DNA 的元素、雙螺旋、人形、太陽系和望遠鏡本身。2001 年 8 月，英國 Chilbolton 電波望遠鏡旁的麥田裡出現一個格式幾乎相同、內容被改寫的「回覆」。普遍認為那是人為作品——我們也這麼認為。所以我們說：那就讓所有人一起來回覆吧。</p>
+  <p class="en">1,679 = 23 × 73, a product of two primes. Arrange the bits in 73 rows of 23 and you get the numbers 1–10, the elements of DNA, the double helix, a human figure, the solar system and the telescope itself. In August 2001 a near-identical "reply" appeared in a field beside the Chilbolton radio telescope in England. It is widely considered man-made — and so do we. So let's all reply, together.</p>
+</section>
+
+<section id="generator">
+  <h2>麥田圈生成器 · Crop-circle generator</h2>
+  <div class="gen">
+    <div class="card">
+      <label for="msg">你的訊息（最多 255 位元組）· Your message (max 255 bytes)</label>
+      <input id="msg" type="text" maxlength="120" value="WE ARE HERE // 1679">
+      <label for="mode">樣式 · Style</label>
+      <select id="mode">
+        <option value="grid">格狀（阿雷西博格式，可解碼）· Grid (Arecibo format, decodable)</option>
+        <option value="ring">環形（經典麥田圈）· Rings (classic crop circle)</option>
+        <option value="arecibo">1974 原始訊息 · The original 1974 message</option>
+      </select>
+      <label><input id="night" type="checkbox"> 夜間發光版 · Night glow</label>
+      <p class="mono" id="bitinfo"></p><p class="err" id="err"></p>
+      <button id="dl">下載 PNG · Download PNG</button><button id="showbits" class="sec">顯示位元 · Show bits</button>
+      <label for="bits">位元 · Bits</label><textarea id="bits" readonly></textarea>
+      <p class="en">圖片完全在你的瀏覽器裡產生，文字不會上傳。<br>Images are made entirely in your browser; your text is never uploaded.</p>
+    </div>
+    <canvas id="cc" width="1200" height="1200" aria-label="生成的麥田圈 / generated crop circle"></canvas>
+  </div>
+</section>
+
+<section id="decode">
+  <h2>解碼器 · Decoder</h2>
+  <div class="card">
+    <p>格狀圖的規則：每列 23 格；壓平＝1、站立＝0。第 0 列是標頭：前 8 位＝訊息長度（位元組），最後 8 位是起始標記 <span class="mono">10101011</span>；之後每 8 位是一個 UTF-8 位元組。</p>
+    <p class="en">Grid rules: 23 cells per row; pressed = 1, standing = 0. Row 0 is a header: the first 8 bits give the message length in bytes, the last 8 bits are the start marker <span class="mono">10101011</span>; after that, every 8 bits is one UTF-8 byte.</p>
+    <label for="decin">貼上 0 和 1 · Paste the 0s and 1s</label>
+    <textarea id="decin" placeholder="00001011000000010101011&#10;..."></textarea>
+    <button id="decbtn">解碼 · Decode</button><button id="decdemo" class="sec">範例 · Example</button>
+    <p>結果 · Result：<strong id="decoded" class="mono"></strong></p>
+  </div>
+</section>
+
+<section id="transparency">
+  <h2>透明度與聲明 · Transparency &amp; disclaimer</h2>
+  <div class="notice">
+    <p><strong>目前沒有發行任何 ARECIBO 代幣。</strong>任何人私訊你「合約地址」或「預售」都不是我們。官方消息只會出現在本網站與我們的官方 X 帳號。</p>
+    <p class="en"><strong>No ARECIBO token exists today.</strong> Anyone DMing you a "contract address" or "presale" is not us. Official news appears only on this site and our official X account.</p>
+    <p>本專案未來可能推出一個迷因幣。若推出：它沒有功能、沒有分紅、不承諾任何報酬；創作者錢包與團隊持有量會在這裡公開。也可能永遠不推出。這不是投資建議。故事是對 1974 年阿雷西博訊息的致敬與虛構創作，我們不宣稱外星人存在。</p>
+    <p class="en">This project may launch a meme coin in the future. If it does: no utility, no dividends, no promise of any return; the creator wallet and team holdings will be published here. It may also never launch. This is not financial advice. The story is a tribute and a work of fiction — we do not claim aliens exist.</p>
+    <p>本站不使用 cookie、不使用第三方追蹤。生成器只匿名計算「多產生了一張圖」（若已啟用），不記錄文字、不記錄 IP。</p>
+    <p class="en">This site uses no cookies and no third-party trackers. The generator only counts "one more image made" anonymously (when enabled) — no text, no IP addresses.</p>
+  </div>
+</section>
+
+<footer class="en">
+  <p>資料來源 · Sources: Wikipedia "Arecibo message"; 1679-bit listing cross-checked against public copies. Art generator is open source in this repository (MIT).</p>
+</footer>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
