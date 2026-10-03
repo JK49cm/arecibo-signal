@@ -9,7 +9,7 @@ const COUNTER_URL = '';
 const SITE = 'arecibosignal.com';
 const CANONICAL_URL = 'https://arecibosignal.com/';
 const WATERMARK = `${SITE} · #AreciboReply`;
-const DEFAULT_SHARE_TEXT = 'I pressed my own crop circle. Can you decode it? #AreciboReply';
+const DEFAULT_SHARE_TEXT = '我壓了一個自己的麥田圈，你解得開嗎？I pressed my own crop circle. Can you decode it? #AreciboReply';
 const DEFAULT_MSG = 'WE ARE HERE // 1679';
 const MAX_CHARS = 120;
 const MODES = ['grid', 'ring', 'arecibo'];
@@ -143,7 +143,7 @@ function render(mode, night, text, challengeView) {
   const r = renderMode(art, mode, text, { size: 1200, night, seed: 1679, label: false });
   state = { mode, night, text, bits: r.bits, challengeView };
   compose(canvas, 1200, 1200);
-  $('#bitinfo').textContent = `${r.bits.length} bits`;
+  $('#bitinfo').textContent = `${r.bits.length} 位元 · bits`;
   $('#err').textContent = '';
   setButtons(true);
   updateLink();
@@ -177,14 +177,14 @@ function updateLink() { $('#sharelink').value = state ? shareLink() : ''; }
 
 function textFromBits(mode, bits) {
   if (mode === 'grid') {
-    if (bits.length % 23) throw new Error('bad length');
+    if (bits.length % 23) throw new Error('位元數不對 · bad length');
     const t = decodeGridBits(bits);
-    if (gridBitsForText(t) !== bits) throw new Error('not a valid grid');
+    if (gridBitsForText(t) !== bits) throw new Error('不是有效的格狀圖 · not a valid grid');
     return t;
   }
-  if (bits.length % 8) throw new Error('bad length');
+  if (bits.length % 8) throw new Error('位元數不對 · bad length');
   const t = bitsToText(bits);
-  if (textToBits(t) !== bits) throw new Error('not valid utf-8');
+  if (textToBits(t) !== bits) throw new Error('不是有效的 UTF-8 · not valid utf-8');
   return t;
 }
 
@@ -199,7 +199,7 @@ function loadHash() {
     if (mode === 'arecibo') { exitChallengeView(); render(mode, night, DEFAULT_MSG, false); return true; }
     if (p.has('b')) {
       const n = parseInt(p.get('l'), 10);
-      if (!(n > 0 && n <= 4096)) throw new Error('bad length');
+      if (!(n > 0 && n <= 4096)) throw new Error('位元數不對 · bad length');
       const bits = unpackBits(unb64u(p.get('b')), n);
       const text = textFromBits(mode, bits);
       if (!text || text.length > MAX_CHARS || isBlocked(text)) throw new Error('blocked');

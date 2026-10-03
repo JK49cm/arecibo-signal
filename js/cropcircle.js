@@ -34,7 +34,7 @@ export function gridBitsForText(text, cols = 23) {
 }
 export function decodeGridBits(bits, cols = 23) {
   bits = bits.replace(/[^01]/g, '');
-  if (bits.slice(15, 23) !== START) throw new Error('start marker 10101011 not found in row 0');
+  if (bits.slice(15, 23) !== START) throw new Error('第 0 列找不到起始標記 10101011 · start marker 10101011 not found in row 0');
   const n = parseInt(bits.slice(0, 8), 2);
   return bitsToText(bits.slice(cols, cols + n * 8));
 }
@@ -148,7 +148,7 @@ export function renderMode(canvas, mode, text, opts = {}) {
   }
   if (mode === 'grid') {
     const bits = gridBitsForText(text);
-    if (decodeGridBits(bits) !== text) throw new Error('self-check failed');
+    if (decodeGridBits(bits) !== text) throw new Error('自我檢查沒通過，請換一句試試 · self-check failed');
     renderGrid(canvas, bits, { ...opts, label: opts.label === false ? '' : `${bits.length} bits | 23-col grid | utf-8` });
     return { bits };
   }

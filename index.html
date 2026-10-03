@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ARECIBO — 每個麥田圈都是一段訊息 | Every crop circle is a message</title>
 <meta name="description" content="把一句話壓進麥田：可解碼的二進位麥田圈生成器，致敬 1974 年阿雷西博訊息。Press your words into a wheat field — a decodable binary crop-circle generator, a tribute to the 1974 Arecibo message.">
-<meta property="og:title" content="ARECIBO — Every crop circle is a message">
-<meta property="og:description" content="Decode it. Press your own. 1679 bits since 1974.">
+<meta property="og:title" content="ARECIBO — 每個麥田圈都是一段訊息 | Every crop circle is a message">
+<meta property="og:description" content="解開它，也壓一個你自己的。從 1974 年開始的 1,679 個位元。Decode it. Press your own. 1679 bits since 1974.">
 <meta property="og:image" content="https://arecibosignal.com/img/hero-arecibo1974.png">
 <meta name="referrer" content="no-referrer">
 <style>
@@ -28,8 +28,8 @@ body.challenge-view #showbits,body.challenge-view #bitsbox{display:none}.small{f
 </style>
 </head>
 <body>
-<div class="notice" style="max-width:1040px;margin:12px auto 0;word-break:break-all"><strong>$CROPCODE contract:</strong> <code class="mono" id="ca">5jBQ2w4u8tKt2wyTkAZxBBNdKoNZiMGr2vV6iEPYQ5j6</code> <button class="sec" id="cacopy" type="button">copy</button> — the only official contract. We never DM first.</div>
-<script>document.getElementById('cacopy').addEventListener('click',()=>{navigator.clipboard.writeText(document.getElementById('ca').textContent).then(()=>{document.getElementById('cacopy').textContent='copied'})});</script>
+<div class="notice" style="max-width:1040px;margin:12px auto 0;word-break:break-all"><strong>$CROPCODE 合約：</strong><code class="mono" id="ca">5jBQ2w4u8tKt2wyTkAZxBBNdKoNZiMGr2vV6iEPYQ5j6</code> <button class="sec" id="cacopy" type="button">複製 · copy</button> 這是唯一官方合約。我們不會先私訊你。<br><span class="en" lang="en"><strong>$CROPCODE contract:</strong> <span class="mono">5jBQ2w4u8tKt2wyTkAZxBBNdKoNZiMGr2vV6iEPYQ5j6</span> — the only official contract. We never DM first.</span></div>
+<script>document.getElementById('cacopy').addEventListener('click',()=>{navigator.clipboard.writeText(document.getElementById('ca').textContent).then(()=>{document.getElementById('cacopy').textContent='已複製 · copied'})});</script>
 <header class="hero">
   <div>
     <h1>ARECIBO</h1>
@@ -106,8 +106,9 @@ body.challenge-view #showbits,body.challenge-view #bitsbox{display:none}.small{f
   </div>
 </section>
 
-<footer class="en">
-  <p>資料來源 · Sources: Wikipedia "Arecibo message"; 1679-bit listing cross-checked against public copies. Art generator is open source in this repository (MIT).</p>
+<footer>
+  <p>資料來源：維基百科〈阿雷西博訊息〉；1,679 位元的內容已和多份公開版本交叉比對。麥田圈生成器在本專案的程式庫開源（MIT 授權）。</p>
+  <p class="en" lang="en">Sources: Wikipedia "Arecibo message"; 1679-bit listing cross-checked against public copies. Art generator is open source in this repository (MIT).</p>
 </footer>
 <script type="module" src="js/app.js"></script>
 </body>
