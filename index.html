@@ -22,6 +22,8 @@ textarea{font-family:ui-monospace,"DejaVu Sans Mono",monospace;font-size:12px;mi
 button{background:var(--gold);color:#1a1508;border:0;border-radius:8px;padding:9px 14px;font-weight:700;cursor:pointer;margin:.6em .4em 0 0}
 button.sec{background:#3a3220;color:var(--fg)}.mono{font-family:ui-monospace,monospace}.err{color:#ff8a7a}
 .notice{border-left:4px solid var(--gold);padding:10px 14px;background:#1a160c}
+button:disabled{opacity:.45;cursor:not-allowed}.cv{border:1px dashed var(--gold);border-radius:10px;padding:10px 14px;margin-bottom:10px}
+body.challenge-view #showbits,body.challenge-view #bitsbox{display:none}.small{font-size:.85em}
 @media(max-width:760px){.hero,.gen{grid-template-columns:1fr}}
 </style>
 </head>
@@ -56,12 +58,25 @@ button.sec{background:#3a3220;color:var(--fg)}.mono{font-family:ui-monospace,mon
         <option value="arecibo">1974 原始訊息 · The original 1974 message</option>
       </select>
       <label><input id="night" type="checkbox"> 夜間發光版 · Night glow</label>
-      <p class="mono" id="bitinfo"></p><p class="err" id="err"></p>
-      <button id="dl">下載 PNG · Download PNG</button><button id="showbits" class="sec">顯示位元 · Show bits</button>
-      <label for="bits">位元 · Bits</label><textarea id="bits" readonly></textarea>
+      <label><input id="challenge" type="checkbox"> 挑戰模式：分享連結不含原文 · Challenge mode: the link hides your sentence</label>
+      <p class="mono" id="bitinfo"></p><p class="err" id="err" role="alert"></p>
+      <button id="dl">下載 1200×1200 · Download</button><button id="dlv" class="sec">直式 1080×1920 · Vertical</button>
+      <label for="sharetext">分享文字（可改）· Share text (editable)</label>
+      <input id="sharetext" type="text" maxlength="200">
+      <button id="share">分享到 X · Share on X</button><button id="copy" class="sec">複製連結 · Copy link</button> <span id="copied" class="small"></span>
+      <label for="sharelink">分享連結 · Share link</label><input id="sharelink" type="text" readonly>
+      <p class="small en">一般模式的連結含有你的句子（編碼後）；挑戰模式的連結只有位元，打開的人要自己解。<br>A normal link carries your sentence (encoded); a challenge link carries only the bits, so whoever opens it has to decode it.</p>
+      <button id="showbits" class="sec">顯示位元 · Show bits</button>
+      <div id="bitsbox"><label for="bits">位元 · Bits</label><textarea id="bits" readonly></textarea></div>
       <p class="en">圖片完全在你的瀏覽器裡產生，文字不會上傳。<br>Images are made entirely in your browser; your text is never uploaded.</p>
     </div>
-    <canvas id="cc" width="1200" height="1200" aria-label="生成的麥田圈 / generated crop circle"></canvas>
+    <div>
+      <div id="cvbanner" class="cv" hidden>
+        <p><strong>這是一張挑戰圖：麥田裡藏了一句話，你解得開嗎？</strong><br><span class="en">This is a challenge: a sentence is hidden in this field. Can you decode it?</span></p>
+        <a href="#decode"><button>去解碼 · Go decode</button></a><button id="makeown" class="sec">做我自己的 · Make my own</button>
+      </div>
+      <canvas id="cc" width="1200" height="1200" aria-label="生成的麥田圈 / generated crop circle"></canvas>
+    </div>
   </div>
 </section>
 
@@ -84,8 +99,8 @@ button.sec{background:#3a3220;color:var(--fg)}.mono{font-family:ui-monospace,mon
     <p class="en"><strong>No ARECIBO token exists today.</strong> Anyone DMing you a "contract address" or "presale" is not us. Official news appears only on this site and our official X account.</p>
     <p>本專案未來可能推出一個迷因幣。若推出：它沒有功能、沒有分紅、不承諾任何報酬；創作者錢包與團隊持有量會在這裡公開。也可能永遠不推出。這不是投資建議。故事是對 1974 年阿雷西博訊息的致敬與虛構創作，我們不宣稱外星人存在。</p>
     <p class="en">This project may launch a meme coin in the future. If it does: no utility, no dividends, no promise of any return; the creator wallet and team holdings will be published here. It may also never launch. This is not financial advice. The story is a tribute and a work of fiction — we do not claim aliens exist.</p>
-    <p>本站不使用 cookie、不使用第三方追蹤。生成器只匿名計算「多產生了一張圖」（若已啟用），不記錄文字、不記錄 IP。</p>
-    <p class="en">This site uses no cookies and no third-party trackers. The generator only counts "one more image made" anonymously (when enabled) — no text, no IP addresses.</p>
+    <p>本站不使用 cookie、不使用第三方追蹤。生成器只在你按「下載」或「分享到 X」時匿名加一（若已啟用），不記錄文字、不記錄 IP。</p>
+    <p class="en">This site uses no cookies and no third-party trackers. The generator only adds one to an anonymous count when you press "Download" or "Share on X" (when enabled) — no text, no IP addresses.</p>
   </div>
 </section>
 
