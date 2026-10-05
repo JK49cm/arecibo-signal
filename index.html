@@ -12,7 +12,7 @@
 <style>
 :root{--bg:#14110a;--fg:#efe6c8;--gold:#c9ad5b;--mut:#a89c78;--card:#1e1a10}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif}
-a{color:var(--gold)}header,section,footer{max-width:1040px;margin:0 auto;padding:28px 20px}
+a{color:var(--gold)}header,section,footer,nav{max-width:1040px;margin:0 auto;padding:28px 20px}nav{padding-top:12px;padding-bottom:8px;font-size:.95em}
 h1{font-size:2.2rem;margin:.2em 0;color:var(--gold);letter-spacing:.04em}h2{color:var(--gold);border-bottom:1px solid #3a3220;padding-bottom:.3em}
 .en{color:var(--mut);font-size:.95em}.hero{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
 .hero img{width:100%;border-radius:12px;border:1px solid #3a3220}.card{background:var(--card);border:1px solid #3a3220;border-radius:12px;padding:18px}
@@ -30,6 +30,12 @@ body.challenge-view #showbits,body.challenge-view #bitsbox{display:none}.small{f
 <body>
 <div class="notice" style="max-width:1040px;margin:12px auto 0;word-break:break-all"><strong>$CROPCODE 合約：</strong><code class="mono" id="ca">5jBQ2w4u8tKt2wyTkAZxBBNdKoNZiMGr2vV6iEPYQ5j6</code> <button class="sec" id="cacopy" type="button">複製 · copy</button> 這是唯一官方合約。我們不會先私訊你。<br><span class="en" lang="en"><strong>$CROPCODE contract:</strong> <span class="mono">5jBQ2w4u8tKt2wyTkAZxBBNdKoNZiMGr2vV6iEPYQ5j6</span> — the only official contract. We never DM first.</span></div>
 <script>document.getElementById('cacopy').addEventListener('click',()=>{navigator.clipboard.writeText(document.getElementById('ca').textContent).then(()=>{document.getElementById('cacopy').textContent='已複製 · copied'})});</script>
+<nav>
+  <a href="/">Home · 首頁</a> ·
+  <a href="/#generator">Generator · 生成器</a> ·
+  <a href="/signal-wall.html">Signal Wall · 訊號牆</a> ·
+  <a href="/#decode">Decode · 解碼</a>
+</nav>
 <header class="hero">
   <div>
     <h1>ARECIBO</h1>
@@ -63,6 +69,7 @@ body.challenge-view #showbits,body.challenge-view #bitsbox{display:none}.small{f
       <label><input id="challenge" type="checkbox"> 挑戰模式：分享連結不含原文 · Challenge mode: the link hides your sentence</label>
       <p class="mono" id="bitinfo"></p><p class="err" id="err" role="alert"></p>
       <button id="dl">下載 1200×1200 · Download</button><button id="dlv" class="sec">直式 1080×1920 · Vertical</button>
+      <p class="small">Got your crop circle? Post it with #CROPCODE or tag @AreciboSignal — we may feature it on the <a href="signal-wall.html">Signal Wall</a>. Free; no purchase or holding needed.<br><span class="en" lang="zh-Hant">做好麥田圈了？公開貼出並加 #CROPCODE 或標記 @AreciboSignal——我們可能收錄到<a href="signal-wall.html">訊號牆</a>。免費參加，不必持幣。</span></p>
       <label for="sharetext">分享文字（可改）· Share text (editable)</label>
       <input id="sharetext" type="text" maxlength="200">
       <button id="share">分享到 X · Share on X</button><button id="copy" class="sec">複製連結 · Copy link</button> <span id="copied" class="small"></span>

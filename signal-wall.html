@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Signal Wall · 訊號牆 | ARECIBO</title>
+<meta name="description" content="Press a crop circle, post it with #CROPCODE, and we may feature it here. Free; no purchase or holding. 做好麥田圈、公開貼出，我們可能收錄到這裡。免費、不必持幣。">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--bg:#14110a;--fg:#efe6c8;--gold:#c9ad5b;--mut:#a89c78;--card:#1e1a10}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif}
+a{color:var(--gold)}header,section,footer,nav{max-width:1040px;margin:0 auto;padding:28px 20px}
+nav{padding-top:12px;padding-bottom:8px;font-size:.95em}
+h1{font-size:2.2rem;margin:.2em 0;color:var(--gold);letter-spacing:.04em}h2{color:var(--gold);border-bottom:1px solid #3a3220;padding-bottom:.3em}
+.en{color:var(--mut);font-size:.95em}.card{background:var(--card);border:1px solid #3a3220;border-radius:12px;padding:18px}
+.notice{border-left:4px solid var(--gold);padding:10px 14px;background:#1a160c}
+.mono{font-family:ui-monospace,monospace}.small{font-size:.85em}
+button{background:var(--gold);color:#1a1508;border:0;border-radius:8px;padding:9px 14px;font-weight:700;cursor:pointer;margin:.6em .4em 0 0}
+button.sec{background:#3a3220;color:var(--fg)}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:16px}
+.wall article{background:var(--card);border:1px solid #3a3220;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.wall img{width:100%;border-radius:8px;border:1px solid #3a3220;background:#000;aspect-ratio:1;object-fit:cover}
+.wall .meta{font-size:.9em;color:var(--mut)}
+.empty{padding:28px 18px;text-align:center;border:1px dashed #3a3220;border-radius:12px;color:var(--mut)}
+ol.how{padding-left:1.3em}ol.how li{margin:.4em 0}
+@media(max-width:760px){.wall{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="notice" style="max-width:1040px;margin:12px auto 0;word-break:break-all"><strong>$CROPCODE contract:</strong> <code class="mono" id="ca">5jBQ2w4u8tKt2wyTkAZxBBNdKoNZiMGr2vV6iEPYQ5j6</code> <button class="sec" id="cacopy" type="button">copy · 複製</button> — the only official contract. We never DM first.<br><span class="en" lang="zh-Hant"><strong>$CROPCODE 合約：</strong><span class="mono">5jBQ2w4u8tKt2wyTkAZxBBNdKoNZiMGr2vV6iEPYQ5j6</span>。這是唯一官方合約。我們不會先私訊你。</span></div>
+<script>document.getElementById('cacopy').addEventListener('click',()=>{navigator.clipboard.writeText(document.getElementById('ca').textContent).then(()=>{document.getElementById('cacopy').textContent='copied · 已複製'})});</script>
+<nav>
+  <a href="/">Home · 首頁</a> ·
+  <a href="/#generator">Generator · 生成器</a> ·
+  <a href="/signal-wall.html"><strong>Signal Wall · 訊號牆</strong></a> ·
+  <a href="/#decode">Decode · 解碼</a>
+</nav>
+<header>
+  <h1>Signal Wall · 訊號牆</h1>
+  <p><strong>Press your own crop circle. Post it. We may feature it here.</strong></p>
+  <p class="en" lang="zh-Hant">做好你自己的麥田圈，公開貼出，我們可能把它收錄到這裡。</p>
+</header>
+
+<section id="how">
+  <h2>How to join · 怎麼參加</h2>
+  <div class="card">
+    <ol class="how">
+      <li>Open the <a href="/#generator">generator</a> at arecibosignal.com.</li>
+      <li>Type your message, pick a style, download the image.</li>
+      <li>Post it publicly with <strong>#CROPCODE</strong>, or tag <strong>@AreciboSignal</strong> (X) / <strong>arecibo-signal.bsky.social</strong> (Bluesky).</li>
+      <li>If we feature it, we repost from the official account and list it on this page with a link to your handle.</li>
+    </ol>
+    <ol class="how en" lang="zh-Hant">
+      <li>打開 arecibosignal.com 的<a href="/#generator">生成器</a>。</li>
+      <li>輸入訊息、選樣式、下載圖片。</li>
+      <li>公開貼出，並加上 <strong>#CROPCODE</strong>，或標記 <strong>@AreciboSignal</strong>（X）／<strong>arecibo-signal.bsky.social</strong>（Bluesky）。</li>
+      <li>若收錄，我們會從官方帳號轉發，並在本頁列出你的帳號連結。</li>
+    </ol>
+  </div>
+</section>
+
+<section id="rules">
+  <h2>Rules · 規則</h2>
+  <div class="notice">
+    <p>Free to join. No purchase and no holding required. There is no money and no token payout. We decide which works to feature. We do not feature offensive or infringing content. Authors may ask for removal via X <a href="https://x.com/AreciboSignal">@AreciboSignal</a> or Telegram <a href="https://t.me/ARECIBO_1116">t.me/ARECIBO_1116</a>.</p>
+    <p class="en" lang="zh-Hant">免費參加。不必購買、也不必持有代幣。沒有金錢、也沒有代幣獎勵。收錄哪些作品由我們決定。不收錄冒犯或侵權的內容。作者可透過 X <a href="https://x.com/AreciboSignal">@AreciboSignal</a> 或 Telegram <a href="https://t.me/ARECIBO_1116">t.me/ARECIBO_1116</a> 要求移除。</p>
+    <p>$CROPCODE is a meme coin with no utility. Not investment advice; meme coins can go to zero.</p>
+    <p class="en" lang="zh-Hant">$CROPCODE 是沒有功能的迷因幣。不是投資建議，迷因幣可能歸零。</p>
+  </div>
+</section>
+
+<section id="gallery">
+  <h2>Featured works · 收錄作品</h2>
+  <div id="wall-root">
+    <p class="empty" id="wall-empty">No featured works yet — yours could be the first.<br><span lang="zh-Hant">還沒有收錄作品，第一個就是你。</span></p>
+    <div class="wall" id="wall-list" hidden></div>
+  </div>
+</section>
+
+<footer>
+  <p>ARECIBO Signal · <a href="/">arecibosignal.com</a> · <a href="https://x.com/AreciboSignal">X</a> · <a href="https://bsky.app/profile/arecibo-signal.bsky.social">Bluesky</a> · <a href="https://t.me/ARECIBO_1116">Telegram</a></p>
+  <p class="en small">Images on this wall are linked from public posts the authors chose to share. We never DM first.</p>
+</footer>
+<script>
+(function () {
+  const list = document.getElementById('wall-list');
+  const empty = document.getElementById('wall-empty');
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  fetch('data/signal_wall.json', { credentials: 'omit', cache: 'no-store' })
+    .then((r) => { if (!r.ok) throw new Error('json ' + r.status); return r.json(); })
+    .then((items) => {
+      if (!Array.isArray(items) || items.length === 0) return;
+      empty.hidden = true;
+      list.hidden = false;
+      const frag = document.createDocumentFragment();
+      for (const it of items) {
+        const art = document.createElement('article');
+        const handle = esc(it.author_handle || '');
+        const platform = esc(it.platform || '');
+        const url = esc(it.post_url || '');
+        const img = it.image_url ? esc(it.image_url) : '';
+        const when = esc(it.added_at || '');
+        let html = '';
+        if (img) html += '<img src="' + img + '" alt="Featured crop circle by ' + handle + '" loading="lazy" referrerpolicy="no-referrer">';
+        html += '<div class="meta">' + platform + (when ? ' · ' + when : '') + '</div>';
+        html += '<div><strong>' + handle + '</strong></div>';
+        if (url) html += '<div><a href="' + url + '" rel="noopener noreferrer" target="_blank">View post · 查看原帖</a></div>';
+        art.innerHTML = html;
+        frag.appendChild(art);
+      }
+      list.appendChild(frag);
+    })
+    .catch(() => { /* keep empty state */ });
+})();
+</script>
+</body>
+</html>
