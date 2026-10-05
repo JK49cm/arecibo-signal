@@ -1,10 +1,10 @@
 import { renderMode, gridBitsForText, decodeGridBits, textToBits, bitsToText, mulberry32, PALETTES } from './cropcircle.js';
 
-// Anonymous use counter (DEPLOY_PLAN section 2). Empty = not connected: nothing is sent anywhere.
-// When our own first-party endpoint exists (see counter-worker/), set it here, e.g. 'https://count.arecibosignal.com'.
-// Only the "download" and "share" buttons send one content-less POST /hit?k=download|share.
-// No cookies, no IP storage, no user text.
-const COUNTER_URL = '';
+// Anonymous use counter (COUNTER-02): Abacus Integer-as-a-Service, no signup.
+// Only the "download" and "share" buttons fire one GET /hit/<ns>/<key> — no cookies, no user text, no query body.
+// Abacus (third-party) will see the visitor IP that any HTTPS request reveals; see site privacy note (audit).
+const COUNTER_BASE = 'https://abacus.jasoncameron.dev';
+const COUNTER_NS = 'arecibosignal';
 
 const SITE = 'arecibosignal.com';
 const CANONICAL_URL = 'https://arecibosignal.com/';
@@ -238,8 +238,14 @@ function exitChallengeView() {
 
 // ---------- actions ----------
 function ping(kind) {
-  if (!COUNTER_URL) return;   // not connected: send nothing
-  try { navigator.sendBeacon(`${COUNTER_URL}/hit?k=${encodeURIComponent(kind)}`); } catch (_) {}
+  // kind is only 'download' | 'share' from our own buttons; strip anything else.
+  const k = String(kind || '').toLowerCase().replace(/[^a-z]/g, '').slice(0, 16);
+  if (k !== 'download' && k !== 'share') return;
+  try {
+    fetch(`${COUNTER_BASE}/hit/${COUNTER_NS}/${k}`, {
+      method: 'GET', mode: 'cors', credentials: 'omit', cache: 'no-store', keepalive: true,
+    }).catch(() => {});
+  } catch (_) {}
 }
 function save(c, name) {
   const a = document.createElement('a');
